@@ -35,6 +35,30 @@ const saveTodos = function(todos){
     localStorage.setItem('todos', JSON.stringify(todos))
 }
 
+// Delete Todo Button
+const removeTodo = function (id) {
+    const todoIndex = todos.findIndex(function(todo){
+        return todo.id === id
+    })  
+    if (todoIndex > -1) {
+        todos.splice(todoIndex, 1)
+        saveTodos(todos)
+        renderTodos(todos, filters)
+    }
+}
+
+//Toggle completed Todo
+const toggleTodo = function (id){
+    const todoIndex = todos.findIndex(function(todo){
+        return todo.id === id
+    }) 
+    if (todoIndex > -1 ){
+        todos[todoIndex].completed = !todos[todoIndex].completed
+        saveTodos(todos)
+        renderTodos(todos, filters)
+    }
+}
+
 // get the DOM elements for an individual todo
 const generateTodoDOM = function (todo) {
 
@@ -42,19 +66,35 @@ const generateTodoDOM = function (todo) {
     const checkbox = document.createElement('input')
     const todoText = document.createElement('span')
     const removeButton = document.createElement('button')
+    const strikeText = document.createElement('strike')
     
     
     //setup checkbox element
     checkbox.setAttribute('type', 'checkbox')
     todoEl.appendChild(checkbox)
+    checkbox.checked = todo.completed
+    checkbox.addEventListener('change', function () {
+        toggleTodo(todo.id)
+        renderTodos(todos, filters)
+    })
 
     //setup todo text
     todoText.textContent = todo.text
-    todoEl.appendChild(todoText)
+    if (todo.completed){
+        strikeText.appendChild(todoText)
+        todoEl.appendChild(strikeText)
+    } else {
+        todoEl.appendChild(todoText)
+    }
+
+    
 
     //setup button element
     removeButton.textContent = "x"
-    todoEl.appendChild(removeButton) 
+    todoEl.appendChild(removeButton)
+    removeButton.addEventListener('click', function(){
+        removeTodo(todo.id)
+    }) 
     
     return todoEl
 }
@@ -65,3 +105,4 @@ const generateSummaryDOM = function (incompleteTodos){
     summary.textContent = `You have ${incompleteTodos.length} todos left`
     return summary
 }
+
