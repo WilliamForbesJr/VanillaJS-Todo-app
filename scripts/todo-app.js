@@ -18,13 +18,18 @@ document.querySelector("#new-todo").addEventListener('submit', (e) => {
     e.preventDefault()
     const newTodo = {
         id: uuidv4(),
-        text: e.target.elements.todoName.value,
+        text: e.target.elements.todoName.value.trim(),
         completed: false
     }
-    todos.push(newTodo)
-    saveTodos(todos)
-    e.target.elements.todoName.value = ''
-    renderTodos(todos, filters)
+    if(newTodo.text.length > 0) {
+        todos.push(newTodo)
+        saveTodos(todos)
+        e.target.elements.todoName.value = ''
+        renderTodos(todos, filters)
+    } else {
+        alert('You need to add text first!')
+    }
+
 })
 
 document.querySelector("#hide-completed").addEventListener('change', (e) => {
