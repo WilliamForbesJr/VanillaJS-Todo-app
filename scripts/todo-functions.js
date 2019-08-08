@@ -1,7 +1,13 @@
+'use strict'
+
 // fetch existing todos from localStorage
 const getSavedTodos = () => {
     const todosJSON = localStorage.getItem('todos')
-    return todosJSON ? JSON.parse(todosJSON) : []
+    try {
+        return todosJSON ? JSON.parse(todosJSON) : []
+    } catch (e) {
+        return []
+    }
 }
 
 //todo search text renderer
