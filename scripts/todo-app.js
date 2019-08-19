@@ -23,7 +23,7 @@ document.querySelector("#new-todo").addEventListener('submit', (e) => {
         text: e.target.elements.todoName.value.trim(),
         completed: false
     }
-    if(newTodo.text.length > 0) {
+    if (newTodo.text.length > 0) {
         todos.push(newTodo)
         saveTodos(todos)
         e.target.elements.todoName.value = ''
